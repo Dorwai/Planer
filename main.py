@@ -204,5 +204,6 @@ class App(customtkinter.CTk):
 
 
 if __name__ == "__main__":
+    import login
     app = App()
     app.mainloop()
