@@ -5,50 +5,50 @@ from PIL import Image
 import os
 import pymysql
 
-CTk.set_appearance_mode("System")
+CTk.set_appearance_mode("System")          # Далее я для всех вас буду обьяснять что значат какие-то куски кода, для лучшего понимания
 CTk.set_default_color_theme("dark-blue")
 
-app = CTk.CTk()
-app.geometry("1920x1080")
-app.config(bg="#242320")
-app.title('Login')
-image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_images")
+app = CTk.CTk()                                                                     
+app.geometry("1920x1080")                                                             
+app.config(bg="#242320")                                                              
+app.title('Login')                                                                    
+image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_images") 
 
 
-def login():
+def login(): # Функция для входа в аккаунт
     if entry_username1.get() == '' or entry_password1 == '':
         messagebox.showwarning(title='Error', message='All fields should be filled.')
     else:
         try:
-            con = pymysql.connect(host='localhost', user='Dorwai', password='Kt0_ProchitalTotL0x', database='usersinfo')
+            con = pymysql.connect(host='localhost', user='Dorwai', password='Kt0_ProchitalTotL0x', database='usersinfo') # Подключение к серверу SQL
             cur = con.cursor()
-            cur.execute('select * from users9 where username=%s and password1=%s', (entry_username1.get(),
+            cur.execute('select * from users9 where username=%s and password1=%s', (entry_username1.get(), # Берет значения из вписанных ранее энтри...
                                                                                    entry_password1.get()))
             row = cur.fetchone()
-            if row == None:
+            if row == None: # ...и проверяет есть ли такой акк в базе
                 messagebox.showerror(title='Error', message='Username or password is invalid.')
             else:
                 login_successed()
-        except Exception as E:
+        except Exception as E: # вывод ошибки если что то пойдет не так, чтобы легче искать было, напишите если что то будет не работать - помогу
             messagebox.showerror(title='Error', message=f'Error due to: {E}')
 
 
-def register():
-    if entry_username2.get() == '' or entry_password2.get() == '' or entry_password_confirm.get() == '':
+def register(): # Функция регистрации
+    if entry_username2.get() == '' or entry_password2.get() == '' or entry_password_confirm.get() == '':  # Проверка, что что-нибудь вообще записано в энитри
         messagebox.showwarning(title='Error', message='All fields should be filled.')
-    elif entry_password2.get() != entry_password_confirm.get():
+    elif entry_password2.get() != entry_password_confirm.get(): # Проверка на одинаковость пароля
         messagebox.showerror(title='Error', message='Passwords aren`t matching.')
     else:
         try:
-            con = pymysql.connect(host='localhost', user='Dorwai', password='Kt0_ProchitalTotL0x',
+            con = pymysql.connect(host='localhost', user='Dorwai', password='Kt0_ProchitalTotL0x', # Подключение к серверу
                                   database='usersinfo')
             cur = con.cursor()
-            cur.execute('select * from users9 where username=%s', entry_username2.get())
+            cur.execute('select * from users9 where username=%s', entry_username2.get()) # Эта команда смотрит на значение 'username', которые УЖЕ есть в базе данных...
             row = cur.fetchone()
-            if row != None:
+            if row != None: # ...если такой есть, то выводится ошибка (некст строка)
                 messagebox.showerror(title='Error', message='User already exists')
-            else:
-                cur.execute('insert into users9 (id, username, password1) values(%s,%s,%s)',
+            else: # иначе создается новое значение в датабазе
+                cur.execute('insert into users9 (id, username, password1) values(%s,%s,%s)', # здесь идут записи id, пароля и ника в базу
                             (0, entry_username2.get(), entry_password2.get()))
                 con.commit()
                 con.close()
@@ -58,13 +58,13 @@ def register():
             messagebox.showerror(title='Error', message=f'Error due to: {E}')
 
 
-def login_successed():
+def login_successed(): # Охренительная функция, выключает это окно и запускает само приложение, правда круто?)
     app.destroy()
     import main
 
 
-img1 = CTk.CTkImage(Image.open(os.path.join(image_path, "tempbglololo.jpg")), size=(1920, 1080))
-l0 = CTk.CTkLabel(master=app, image=img1, text="")
+img1 = CTk.CTkImage(Image.open(os.path.join(image_path, "tempbglololo.jpg")), size=(1920, 1080)) # Тут ничего впринципе интересного, просто создание окошек, лэйблов и тп, 
+l0 = CTk.CTkLabel(master=app, image=img1, text="")                                               # до следующих 'решеток' будет создание всего барахла для логина
 l0.pack()
 
 frame_login_screen = CTk.CTkLabel(master=app, width=320, height=360, corner_radius=15)
