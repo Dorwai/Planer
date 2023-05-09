@@ -2,6 +2,6 @@
 ---
 Для запуска проекта нужно:
 ---
-*customtkinter
-*pymysql
-*calendar
+customtkinter
+pymysql
+calendar
