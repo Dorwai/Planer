@@ -2,9 +2,9 @@
 ---
 Для запуска проекта нужно:
 ---
-customtkinter
+customtkinter ( pip install customtkinter )
 -
-pymysql
+pymysql ( pip install pymysql )
 -
-calendar
+calendar ( pip install calendar )
 -
