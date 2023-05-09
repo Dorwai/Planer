@@ -3,5 +3,8 @@
 Для запуска проекта нужно:
 ---
 customtkinter
+-
 pymysql
+-
 calendar
+-
