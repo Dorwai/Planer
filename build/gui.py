@@ -2,6 +2,8 @@ from calendar import Calendar
 from pathlib import Path
 import os
 from tkinter import END
+from tkinter.messagebox import askyesno, askokcancel, showinfo
+
 import customtkinter
 import customtkinter as CTk
 from PIL import Image
@@ -66,7 +68,7 @@ class App(customtkinter.CTk):
 
         # иконка месяца недели 3
         self.image_6 = CTk.CTkImage(
-            Image.open(os.path.join(ASSETS_PATH, "image_6.png")),size=(50,50))
+            Image.open(os.path.join(ASSETS_PATH, "image_6.png")),size=(40,40))
 
         # иконка конспектов
         self.image_7 = CTk.CTkImage(
@@ -77,6 +79,9 @@ class App(customtkinter.CTk):
 
         self.image_9 = CTk.CTkImage(
             Image.open(os.path.join(ASSETS_PATH, "arrow_2.png")), size=(24.52, 49))
+
+        self.galka = CTk.CTkImage(
+            Image.open(os.path.join(ASSETS_PATH, "galka.png")), size=(40, 40))
 
         self.Z1 = CTk.CTkLabel(master=self.month, width=918, height=569, text="",
                               bg_color="#F4F6F4", corner_radius=10, font=("Inter Bold", 20))
@@ -93,10 +98,11 @@ class App(customtkinter.CTk):
         )
 
 
-        self.cal = Calendar(self.CalendarZ, selectmode="day", background='green', borderwidth=25, foreground='white',
-                            font="Helvetica 30", width=655, height=528,
-                            showweeknumbers=False, locale='ru', showothermonthdays=False)
-        self.cal.place(x=70,y=110)
+        self.cal = Calendar(self.CalendarZ, selectmode="day", background='#BBDBC4', borderwidth=25, foreground='white',
+                            font="Helvetica 35", width=655, height=528, headersbackground="#D3E1D5",
+                            showweeknumbers=False, locale='ru', showothermonthdays=False, selectbackground="#D3E1D5",
+                            weekendbackground="#E4F5E7")
+        self.cal.place(x=5,y=70)
 
         # имя пользователя
         self.user_name=CTk.CTkTextbox(
@@ -170,7 +176,7 @@ class App(customtkinter.CTk):
             text="Календарь",
             corner_radius=0,
             image=self.image_5,
-            hover_color=( "#578E63","#77AB85"),
+            hover_color=("#578E63", "#77AB85"),
             border_spacing=0,
             fg_color="#77AB85",
             font=("Century Gothic", 32),
@@ -203,21 +209,22 @@ class App(customtkinter.CTk):
 
         self.week_b = CTk.CTkButton(
             master=self.navigation_frame,
-            text="Неделя",
+            text="Привычки",
             corner_radius=0,
-            image=self.image_7,
+            image=self.galka,
             compound="left",
             hover_color=( "#578E63","#77AB85"),
             border_spacing=0,
             fg_color="#77AB85",
             font=("Inter Light", 32),
             command=self.week_b_event,
-            width=375.0,
+            width=340.0,
             height=80.0
         )
         self.week_b.place(
             x=0.0,
-            y=320.0,
+            y=480.0,
+
         )
 
 
@@ -235,7 +242,8 @@ class App(customtkinter.CTk):
         )
         self.days_b.place(
             x=0.0,
-            y=400.0,
+            y=320.0,
+
         )
 
 
@@ -253,7 +261,8 @@ class App(customtkinter.CTk):
         )
         self.conspect_b.place(
             x=0.0,
-            y=480.0,
+            y=400.0,
+
         )
 
 
@@ -274,45 +283,50 @@ class App(customtkinter.CTk):
             y=620.0,
         )
 
-        #НЕДЕЛЬНЫЙ ФРЕЙМ
-        self.week = customtkinter.CTkFrame(master=self, corner_radius=0,
+        #ТРЕКЕР ПРИВЫЧЕК
+        self.trek = customtkinter.CTkFrame(master=self, corner_radius=0,
             fg_color = "#D8F8DF",
             height = 720,
             width = 940,
-
         )
 
-        self.user_name = CTk.CTkTextbox(
-            master=self.week,
-            font=("IrishGrover Regular", 20 * -1),
-            width=100,
-            height=40
-        )
-        self.user_name.insert("0.0", "#USER2")
-        self.user_name.place(x=812, y=60)
-
-        self.img2 = CTk.CTkLabel(master=self.week, image=self.image_2, text="", width=70, height=70,
-                                 bg_color="#D8F8DF")
-        self.img2.place(
-            x=715.0,
-            y=38.0,
+        self.F = CTk.CTkLabel(master=self.trek, text="", width=928, height=713,
+                               bg_color="#ECF3EC", font=('Inter', 40), text_color="white")
+        self.F.place(
+            x=7, y=7
         )
 
-        self.img3 = CTk.CTkLabel(master=self.week, image=self.image_3, text="", width=857, height=1,
-                                 bg_color="#D8F8DF")
-        self.img3.place(
-            x=41.5,
-            y=121.5,
+        self.text = CTk.CTkLabel(master=self.trek, text="Трекер привычек", width=846, height=30,
+                              bg_color="#ECF3EC", font=('Inter', 30), )
+        self.text.place(
+            x=48, y=7
         )
 
-        self.citate = CTk.CTkTextbox(
-            master=self.week,
-            font=("IrishGrover Regular", 20 * -1),
-            width=511,
-            height=48
+        self.F1 = CTk.CTkLabel(master=self.trek, text="", width=853, height=671,
+                              bg_color="#D3E1D5", font=('Inter', 20), text_color="white")
+        self.F1.place(
+            x=46, y=38
         )
-        self.citate.insert("0.0", "Treat your habits like your plants")
-        self.citate.place(x=44, y=60)
+        yy1=55
+        for i in range(13):
+            self.priv=CTk.CTkTextbox(master=self.trek, height=30, width=180)
+            self.priv.place(x=57, y=yy1)
+            yy1+=45
+
+
+        xx=247
+        yy=63
+        for i in range (13):
+            for j in range (25):
+                self.ch = CTk.CTkCheckBox(master=self.trek, width=16, height=16, text="",
+                                          hover_color=("gray75", "gray25"),
+                                          fg_color="#6AAC74")
+                self.ch.place(x=xx, y=yy)
+                xx+=25
+            xx=247
+            yy += 45
+
+
 
         # 3 ДНЕВНЫЙ ФРЕЙМ
         self.days = customtkinter.CTkFrame(self, corner_radius=0,
@@ -489,46 +503,132 @@ class App(customtkinter.CTk):
                                            width=940,
                                            )
 
-        self.user_name = CTk.CTkTextbox(
-            master=self.conspect,
-            font=("IrishGrover Regular", 20 * -1),
-            width=100,
-            height=40
-        )
-        self.user_name.insert("0.0", "#USER2")
-        self.user_name.place(x=812, y=60)
+        # Функция, которая добавляет конспект на основной фрейм. Она создает файл с названием, которое было получено с окошка
+        # добавления конспекта. Также тут есть проверка на то, существует ли уже конспект.
+        def add(task):
+            if not task in lst:
+                f = CTk.CTkFrame(mainframe)
 
-        self.img2 = CTk.CTkLabel(master=self.conspect, image=self.image_2, text="", width=70, height=70,
-                                 bg_color="#D8F8DF")
-        self.img2.place(
-            x=715.0,
-            y=38.0,
-        )
+                file = open("conspects\\" + task + '.txt', 'w')
+                file.close()
+                CTk.CTkButton(f, text=task, width=80, command=lambda: openfile(task)).pack(side='left')
+                CTk.CTkButton(f, text='', width=30, command=lambda: delete(task, f)).pack(side='left')
+                f.pack(anchor='nw', padx=5, pady=5)
+                lst.append(task)
+            else:
+                showinfo(title="Добавление", message="У вас уже есть данный конспект")
 
-        self.img3 = CTk.CTkLabel(master=self.conspect, image=self.image_3, text="", width=857, height=1,
-                                 bg_color="#D8F8DF")
-        self.img3.place(
-            x=41.5,
-            y=121.5,
-        )
+        # "Фальшивое" добавление конспекта, сделанное для того, чтобы при запуске программы сразу загружались ранее созданные конспекты
+        def fake_add(task):
+            f = CTk.CTkFrame(mainframe)
 
-        self.citate = CTk.CTkTextbox(
-            master=self.conspect,
-            font=("Century Gothic", 20 * -1),
-            width=511,
-            height=48
-        )
-        self.citate.insert("0.0", "Treat your habits like your plants")
-        self.citate.place(x=44, y=60)
+            CTk.CTkButton(f, text=task, width=80, command=lambda: openfile(task)).pack(side='left')
+            CTk.CTkButton(f, text='', width=30, command=lambda: [delete(task, f), ]).pack(side='left')
+            f.pack(anchor='nw', padx=5, pady=5)
+
+        # Сохранение текста конспекта в файл
+        def Save(task, inf):
+            with open("conspects\\" + task + '.txt', 'w') as file:
+                file.write(inf)
+                file.close()
+
+        # Эта функция начинает использваться, когда открывается какой-либо конспект. Создается новый фрейм и
+        # выдвигается на передний план, а старый скрывается. Добавляется текстовое поле и 2 кнопки.
+        def openfile(name):
+            mainframe.pack_forget()
+            secframe = CTk.CTkFrame(self.conspect, width=940, height=720)
+            secframe.pack(fill="both", side="top", expand=True)
+            secframe.tkraise()
+
+            text_area = CTk.CTkTextbox(secframe)
+            text_area.pack(fill="both", side="top", expand=True)
+            text_area.configure(fg_color='gray14', font=('Times New Roman', 18))
+            with open("conspects\\" + name + '.txt', 'r') as file:
+                text = file.read()
+                text_area.insert("1.0", text)
+
+            c = CTk.CTkButton(secframe, text='сохранить', command=lambda: Save(name, text_area.get('1.0', END)[:-1]))
+            c.pack(anchor='se', side='right', pady=5, padx=3)
+
+            b = CTk.CTkButton(secframe, text='назад', command=lambda: (back(name, text_area.get('1.0', END)[:-1],
+                                                                            secframe)))  # [secframe.destroy(), mainframe.pack(fill="both", side="top", expand=True)]
+            b.pack(anchor='se', side='right', pady=5)
+
+        # def pos_replace(a,b):
+
+        # Функция, вызываемая нажатием кнопки "назад". Проверяет, был ли изменен текст с конспекте, по сравнению с данными в файле,
+        # и при наличии изменений появляется окно. В зависимости от выбора либо происходит сохранение и последующее разрушение
+        # фрейма конспекта, либо разрушение фрейма без сохранения
+        def back(name, inf, secframe):
+            with open("conspects\\" + name + '.txt', 'r') as file:
+                text = file.read()
+                if text != inf:
+                    result = askokcancel(title="Подтвержение операции", message="Файл был изменен, сохранить?")
+                    if result:
+                        Save(name, inf)
+                        secframe.destroy()
+                        mainframe.pack(fill="both", side="top", expand=True)
+                    elif not result:
+                        secframe.destroy()
+                        mainframe.pack(fill="both", side="top", expand=True)
+                else:
+                    secframe.destroy()
+                    mainframe.pack(fill="both", side="top", expand=True)
+
+        # Функция вызывется при попытке удалить конспект. Сделано для того, чтобы конспект случайно не удалили.
+        # С удалением конспекта удаляется и связанный с ним файл
+        def delete(task, f):
+            result = askyesno(title="Подтвержение операции", message="Подтвердить операцию?")
+            if result:
+                os.remove("conspects\\" + task + '.txt')
+                f.pack_forget()
+
+        # Функция, сделанная для того, чтобы окно добавления конспекта нельзя было "миновать"
+        def dismiss(window):
+            window.grab_release()
+            window.destroy()
+
+        # Функция добавления конспекта. Создается окно, которое создаёт конспект с названием, которое было написано пользователем
+        def add_task():
+            window = CTk.CTkToplevel()
+            window.title('Добавить задачу')
+            window.geometry('300x80')
 
 
+            task_text = CTk.CTkEntry(window, width=250)
+            task_text.pack(pady=5)
 
+            window.protocol("WM_DELETE_WINDOW", lambda: dismiss(window))
+            CTk.CTkButton(window, text='Добавить', command=lambda: [add(task_text.get()), dismiss(window)]).pack()
+            window.grab_set()
+
+        # основное окно
+        # root = CTk.CTk()
+        # root.title("Планировщик задач")
+        # root.geometry('700x300')
+        # root.eval('tk::PlaceWindow . center')
+        # картинка крестика
+
+        # первый фрейм, занимающий все окно, на нем располагаются конспекты
+        mainframe = CTk.CTkFrame(self.conspect, width=940, height=720)
+        mainframe.pack(fill="both", side="top", expand=True)
+        # кнопка добавления конспекта
+        btn_add_task = CTk.CTkButton(mainframe, text='Добавить задачу', command=add_task)
+        btn_add_task.pack(anchor='s', side='bottom', pady=5)
+        # То самое "фальшивое" создание кнопок, о котором я писал выше, сделано так, потому что нормальное создание кнопок не подходит
+        a = 0
+        lst = os.listdir('conspects')
+        for i in lst:
+            res_lst = lst[a].replace('.txt', '')
+            lst[a] = res_lst
+            fake_add(res_lst)
+            a += 1
         self.select_frame_by_name("month")
 
     def select_frame_by_name(self, name):
         # set button color for selected button
         self.month_b.configure(fg_color=("#8CBA98", "#AFDFBC") if name == "month" else "transparent")
-        self.week_b.configure(fg_color=("#8CBA98", "#AFDFBC") if name == "week" else "transparent")
+        self.week_b.configure(fg_color=("#8CBA98", "#AFDFBC") if name == "trek" else "transparent")
         self.days_b.configure(fg_color=("#8CBA98", "#AFDFBC") if name == "days" else "transparent")
         self.conspect_b.configure(fg_color=("#8CBA98", "#AFDFBC") if name == "conspect" else "transparent")
 
@@ -537,10 +637,10 @@ class App(customtkinter.CTk):
             self.month.place(x=340, y=0)
         else:
             self.month.place_forget()
-        if name == "week":
-            self.week.place(x=340, y=0)
+        if name == "trek":
+            self.trek.place(x=340, y=0)
         else:
-            self.week.place_forget()
+            self.trek.place_forget()
         if name == "days":
             self.days.place(x=340, y=0)
         else:
@@ -555,7 +655,7 @@ class App(customtkinter.CTk):
         self.select_frame_by_name("month")
 
     def week_b_event(self):
-        self.select_frame_by_name("week")
+        self.select_frame_by_name("trek")
 
     def days_b_event(self):
         self.select_frame_by_name("days")
