@@ -3,16 +3,19 @@ import tkinter
 import customtkinter as CTk
 from PIL import Image
 import os
+from pathlib import Path
 import pymysql
 
 CTk.set_appearance_mode("System")          # Далее я для всех вас буду обьяснять что значат какие-то куски кода, для лучшего понимания
 CTk.set_default_color_theme("dark-blue")
 
-app = CTk.CTk()                                                                     
-app.geometry("1920x1080")                                                             
-app.config(bg="#242320")                                                              
-app.title('Login')                                                                    
-image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_images") 
+app = CTk.CTk()
+app.geometry("1280x720")
+app.config(bg="#242320")
+app.title('Login')
+
+OUTPUT_PATH = Path(__file__).parent
+ASSETS_PATH = OUTPUT_PATH / Path(r"F:\proba\build\assets\frame0")
 
 
 def login(): # Функция для входа в аккаунт
@@ -60,14 +63,14 @@ def register(): # Функция регистрации
 
 def login_successed(): # Охренительная функция, выключает это окно и запускает само приложение, правда круто?)
     app.destroy()
-    import main
+    import gui
 
 
-img1 = CTk.CTkImage(Image.open(os.path.join(image_path, "tempbglololo.jpg")), size=(1920, 1080)) # Тут ничего впринципе интересного, просто создание окошек, лэйблов и тп, 
+img1 = CTk.CTkImage(Image.open(os.path.join(ASSETS_PATH, "ris.jpg")), size=(1280, 720)) # Тут ничего впринципе интересного, просто создание окошек, лэйблов и тп,
 l0 = CTk.CTkLabel(master=app, image=img1, text="")                                               # до следующих 'решеток' будет создание всего барахла для логина
 l0.pack()
 
-frame_login_screen = CTk.CTkLabel(master=app, width=320, height=360, corner_radius=15)
+frame_login_screen = CTk.CTkFrame(master=app, width=320, height=360, corner_radius=15, fg_color="#D3E1D5")
 frame_login_screen.place(relx=0.45, rely=0.5, anchor=tkinter.E)
 
 l1 = CTk.CTkLabel(master=frame_login_screen, text="Login into your account", font=('Century Gothic', 20))
@@ -85,7 +88,7 @@ login_button.place(x=50, y=290)
 ###
 ###
 
-frame_register_screen = CTk.CTkLabel(master=app, width=320, height=360, corner_radius=15)
+frame_register_screen = CTk.CTkFrame(master=app, width=320, height=360, corner_radius=15, fg_color="#D3E1D5")
 frame_register_screen.place(relx=0.55, rely=0.5, anchor=tkinter.W)
 l2 = CTk.CTkLabel(master=frame_register_screen, text="Register your account", font=('Century Gothic', 20))
 l2.place(x=50, y=45)
