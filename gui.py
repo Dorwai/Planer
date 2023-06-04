@@ -321,7 +321,20 @@ class App(customtkinter.CTk):
                 xx+=25
             xx=247
             yy += 45
+        
+        self.chistka=CTk.CTkButton(master=self.trek, hover_color=( "#578E63","#77AB85"),
+            fg_color="#9BAAA5", text="Очистить",
+            font=("Inter Semi Bold", 22),
+            width=170.0,
+            height=40.0 )
+        self.chistka.place(x=60,y=653)
 
+        self.sohr = CTk.CTkButton(master=self.trek, hover_color=("#578E63", "#77AB85"),
+                                     fg_color="#9BAAA5", text="Сохранить",
+                                     font=("Inter Semi Bold", 22),
+                                     width=170.0,
+                                     height=40.0)
+        self.sohr.place(x=718, y=653)
 
 
         # 3 ДНЕВНЫЙ ФРЕЙМ
@@ -524,7 +537,7 @@ class App(customtkinter.CTk):
                                  font=("Inter Regular", 32 * -1),
                                  )
         self.text.place(x=0, y=10)
-
+  
         # Функция, сделанная для того, чтобы окно добавления конспекта нельзя было "миновать"
         def dismiss(window):
             window.grab_release()
